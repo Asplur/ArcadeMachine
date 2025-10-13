@@ -1,0 +1,1168 @@
+--@name Strategem Hero
+--@author Asplur
+--@shared
+
+
+local Combinations = {
+
+    {Name = "LIFT-850 Jump Pack", Pattern = {1, 3, 3, 1, 3}},
+    {Name = "B-1 Supply Pack", Pattern = {1, 2, 1, 3, 3, 1}},
+    {Name = "AX/LAS-5 Guard Dog Rover", Pattern = {1, 3, 2, 3, 4, 4}},
+    {Name = "SH-20 Ballistic Shield Backpack", Pattern = {1, 2, 1, 1, 3, 2}},
+    {Name = "AX/AR-23 Guard Dog", Pattern = {1, 3, 2, 3, 4, 1}},
+
+    {Name = "MG-43 Machine Gun", Pattern = {1, 2, 1, 3, 4}},
+    {Name = "APW-1 Anti-Material Rifle", Pattern = {1, 2, 4, 3, 1}},
+    {Name = "M-105 Stalwart", Pattern = {1, 2, 1, 3, 3, 2}},
+    {Name = "EAT-17 Expendable Anti-Tank", Pattern = {1, 1, 2, 3, 4}},
+    {Name = "GR-8 Recoilless Rifle", Pattern = {1, 2, 4, 4, 2}},
+    {Name = "FLAM-40 Flamethrower", Pattern = {1, 2, 3, 1, 3}},
+    {Name = "AC-8 Autocannon", Pattern = {1, 2, 1, 3, 3, 4}},
+    {Name = "MG-206 Heavy Machine Gun", Pattern = {1, 2, 3, 1, 1}},
+    {Name = "RS-422 Railgun", Pattern = {1, 4, 2, 1, 3, 2, 4}},
+    {Name = "FAF-14 Spear Launcher", Pattern = {1, 1, 3, 1, 1}},
+    {Name = "GL-21 Grenade Launcher", Pattern = {1, 2, 3, 2, 1}},
+    {Name = "LAS-98 Laser Cannon", Pattern = {1, 2, 1, 3, 2}},
+    {Name = "ARC-3 Arc Thrower", Pattern = {1, 4, 1, 3, 2, 2}},
+    {Name = "LAS-99 Quasar Cannon", Pattern = {1, 1, 3, 2, 4}},
+    {Name = "EXO-45 Patriot Exosuit", Pattern = {2, 1, 4, 3, 2, 1, 1}},
+
+    {Name = "Reinforce", Pattern = {3, 1, 4, 2, 3}},
+    {Name = "SOS Beacon", Pattern = {3, 1, 4, 2}},
+    {Name = "Resupply", Pattern = {1, 1, 3, 4}},
+    {Name = "NUX-223 Hellbomb", Pattern = {1, 3, 2, 1, 3, 4, 1, 3}},
+    {Name = "SSSD Delivery", Pattern = {1, 1, 1, 3, 3}},
+    {Name = "Seismic Probe", Pattern = {3, 3, 2, 4, 1, 1}},
+    {Name = "Upload Data", Pattern = {2, 4, 3, 3, 3}},
+    {Name = "Eagle Re-arm", Pattern = {3, 3, 2, 3, 4}},
+    {Name = "Illumination Flare", Pattern = {4, 4, 2, 2}},
+    {Name = "SEAF Artillery", Pattern = {4, 3, 3, 1}},
+    {Name = "Super Earth Flag", Pattern = {1, 3, 1, 3}},
+
+    {Name = "E/MG-101 HMG Emplacement", Pattern = {1, 3, 2, 4, 4, 2}},
+    {Name = "FX-12 Shield Generator Relay", Pattern = {1, 1, 2, 4, 2, 4}},
+    {Name = "A/ARC-3 Tesla Tower", Pattern = {1, 3, 4, 3, 2, 4}},
+    {Name = "MD-6 Anti-Personnel Minefield", Pattern = {1, 2, 3, 4}},
+    {Name = "MD-14 Incendiary Mines", Pattern = {1, 2, 2, 1}},
+    {Name = "A/MG-43 Machine Sentry", Pattern = {1, 3, 4, 4, 3}},
+    {Name = "A/G-16 Gatling Sentry", Pattern = {1, 3, 4, 2}},
+    {Name = "A/M-12 Mortar Sentry", Pattern = {1, 3, 4, 4, 1}},
+    {Name = "A/AC-8 Autocannon Sentry", Pattern = {1, 3, 4, 3, 2, 3}},
+    {Name = "A/MLS-4X Rocket Sentry", Pattern = {1, 3, 4, 4, 2}},
+    {Name = "A/M-23 EMS Sentry", Pattern = {1, 3, 4, 1, 4}},
+
+    {Name = "Orbital Gatling Barrage", Pattern = {4, 1, 2, 3, 3}},
+    {Name = "Orbital Airburst Strike", Pattern = {4, 4, 4}},
+    {Name = "Orbital 120mm HE Barrage", Pattern = {4, 4, 1, 2, 4, 1}},
+    {Name = "Orbital 380mm HE Barrage", Pattern = {4, 1, 3, 3, 2, 1, 1}},
+    {Name = "Orbital Walking Barrage", Pattern = {4, 1, 4, 1, 4, 1}},
+    {Name = "Orbital Laser", Pattern = {4, 1, 3, 4, 1}},
+    {Name = "Orbital Rail Cannon Strike", Pattern = {4, 3, 1, 1, 4}},
+    {Name = "Orbital Precision Strike", Pattern = {4, 4, 3}},
+    {Name = "Orbital Gas Strike", Pattern = {4, 4, 1, 4}},
+    {Name = "Orbital EMS Strike", Pattern = {4, 4, 2, 1}},
+    {Name = "Orbital Smoke Strike", Pattern = {4, 4, 1, 3}},
+
+    {Name = "Eagle Strafing Run", Pattern = {3, 4, 4}},
+    {Name = "Eagle Airstrike", Pattern = {3, 4, 1, 4}},
+    {Name = "Eagle Cluster Bomb", Pattern = {3, 4, 1, 1, 4}},
+    {Name = "Eagle Napalm", Pattern = {3, 4, 1, 3}},
+    {Name = "Eagle Smoke Strike", Pattern = {3, 4, 3, 1}},
+    {Name = "Eagle 110mm Rockets", Pattern = {3, 4, 3, 2}},
+    {Name = "Eagle 500kg Bomb", Pattern = {3, 4, 1, 1, 1}}
+}
+
+if SERVER then
+
+    local screen = prop.createComponent(chip():getPos() + Vector(-0.5, -2.6, 57.3), Angle(73.5,90,0), "starfall_screen", "models/bull/dynamicbuttonsf.mdl", true)
+
+    local Seat_Prop = prop.create(chip():getPos() + chip():getRight() * -40, chip():getForward(), "models/props_c17/chair_stool01a.mdl", true)
+
+    local Seat = prop.createSeat(Seat_Prop:getPos() + Vector(0, 0, 30), Angle(0, -90, 0), "models/hunter/blocks/cube025x025x025.mdl", true)
+
+    local Camera = prop.create(Seat_Prop:getPos() + Vector(0, -10, 60), chip():getForward() + Angle(0, -90, 0), "models/hunter/blocks/cube025x025x025.mdl", true)
+
+    Camera:setColor(Color(0,0,0,0))
+    Seat:setColor(Color(0,0,0,0))
+    local Driver
+
+    hook.add("PlayerEnteredVehicle", "StoolChairEnter", function(ply, vehicle, num)
+        if vehicle == Seat then enableHud(ply, true) ply:setViewEntity(Camera) Driver = ply end
+    end)
+
+    hook.add("PlayerLeaveVehicle", "StoolChairExit", function(ply, vehicle)
+        if vehicle == Seat then Driver:setViewEntity(nil) end
+    end)
+
+    chip():setNocollideAll(true)
+    chip():setNoDraw(true)
+
+    screen:setColor(Color(255,255,255,1))
+    screen:setNocollideAll(true)
+    screen:linkComponent(chip())
+    screen:setParent(chip())
+
+    local sound = true
+
+    hook.add("PlayerSay", "Commands", function(ply, msg)
+        if msg:sub(1, 6) == "!sound" then
+                    sound = not sound
+                    net.start("mute")
+                    net.writeBool(sound)
+                    net.send(ply)
+            return ""
+        end
+    end)
+
+    net.receive("RequestLeaderboard", function()
+
+        local players = {}
+        for i, ply in ipairs(find.allPlayers()) do
+            local steamID = ply:getSteamID():match(":(%d+)$")
+            table.insert(players, {
+                steamID = steamID,
+                name = ply:getName()
+            })
+        end
+
+        net.start("ReadLeaderboardFiles")
+            net.writeTable(players)
+        net.send(owner())
+    end)
+
+    net.receive("BroadcastLeaderboardData", function()
+        local leaderboardData = net.readTable()
+
+        net.start("ReceiveLeaderboardData")
+            net.writeTable(leaderboardData)
+        net.send()
+    end)
+
+    net.receive("SendPlayerStats", function(ply)
+        local statsData = net.readTable()
+
+        net.start("SavePlayerStats")
+            net.writeTable(statsData)
+        net.send(owner())
+    end)
+
+end
+
+if CLIENT then
+
+    local holo = hologram.create(chip():getPos(), chip():getAngles() + Vector(0, 180, 90), "models/Combine_Helicopter/helicopter_bomb01.mdl", Vector(50))
+    holo:setParent(chip())
+
+    local mymesh
+    local texture = material.create("VertexLitGeneric")
+    texture:setTextureURL("$basetexture", "https://github.com/Asplur/Casino-Game-UI/blob/main/ArcadeMachineImage.png?raw=true")
+
+    http.get("https://raw.githubusercontent.com/Asplur/Casino-Game-UI/refs/heads/main/ArcadeMachine.obj", function(objdata)
+        local function doneLoadingMesh()
+            holo:setMesh(mymesh)
+            holo:setMeshMaterial(texture)
+            holo:setRenderBounds(Vector(-200), Vector(200))
+        end
+
+        local loadmesh = coroutine.wrap(function() 
+            mymesh = mesh.createFromObj(objdata, true).Object_10 
+            return true 
+        end)
+
+        hook.add("think", "loadingMesh", function()
+            while quotaAverage() < quotaMax() / 2 do
+                if loadmesh() then
+                    doneLoadingMesh()
+                    hook.remove("think", "loadingMesh")
+                    return
+                end
+            end
+        end)
+    end)
+
+    local ThemeSong
+
+    local function PlayTheme()
+        if ThemeSong then
+            ThemeSong:play()
+        end
+    end
+
+    local sounds = bass.loadURL("https://dl.dropboxusercontent.com/scl/fi/vs093lis27bvvuleeq2mv/HELLDIVERS-IntroMain-Theme-8-BIT-DIVE.mp3?rlkey=vqmxp64t5i8wgk6avewovphaf&st=ge3t5rek&dl=0", "3D noblock", function(sound)
+        if sound then
+            ThemeSong = sound
+            ThemeSong:setVolume(0.25)
+            ThemeSong:setPos(chip():getPos())
+            ThemeSong:setFade(150, 300, false)
+            ThemeSong:setLooping(true)
+        end
+    end)
+
+    net.receive("mute", function()
+        if net.readBool() == false then
+            ThemeSong:setVolume(0)
+        else
+            ThemeSong:setVolume(0.25)
+        end
+    end)
+
+    timer.simple(2, function() PlayTheme() end)
+
+    local Buttons = sound.create(chip(), "friends/friend_join.wav", false)
+    local Loose = sound.create(chip(), "replay/cameracontrolerror.wav", false)
+    local Round_Clear = sound.create(chip(), "friends/message.wav", false)
+    local Bonus_Sound = sound.create(chip(), "doors/vent_open1.wav", false)
+
+    local Stretch_Ratio = Vector(1.53,1)
+    local screenWidth = 512 * Stretch_Ratio.x
+    local screenHeight = 512 * Stretch_Ratio.y
+    local screen = chip():getLinkedComponents()[1]
+    local mouse_pressed = input.isMouseDown(MOUSE.LEFT)
+    local mouseX, mouseY
+
+    local Down_Image = material.create("UnlitGeneric")
+    Down_Image:setTextureURL("$basetexture", "https://github.com/Asplur/Gmod_OBJ/blob/main/Down.jpg?raw=true")
+    local Up_Image = material.create("UnlitGeneric")
+    Up_Image:setTextureURL("$basetexture", "https://github.com/Asplur/Gmod_OBJ/blob/main/Up.jpg?raw=true")
+    local Left_Image = material.create("UnlitGeneric")
+    Left_Image:setTextureURL("$basetexture", "https://github.com/Asplur/Gmod_OBJ/blob/main/Left.jpg?raw=true")
+    local Right_Image = material.create("UnlitGeneric")
+    Right_Image:setTextureURL("$basetexture", "https://github.com/Asplur/Gmod_OBJ/blob/main/Right.jpg?raw=true")
+
+    local Button_Pitch = 1
+
+    local CurrentCombination = nil
+    local CurrentInput = {}
+    local GameActive = false
+    local Message = "Press Space to start!"
+    local MessageColor = Color(255, 255, 255, 255)
+
+    local Score = 0
+    local TotalStratagems = 0
+    local PerfectStratagems = 0
+    local Errors = 0
+    local CurrentStreak = 0
+    local MaxStreak = 0
+
+    local GameTime = 10.0
+    local MaxGameTime = 10.0
+    local TimeRemaining = GameTime
+    local LastFrameTime = timer.realtime()
+    local GameRunning = false
+    local StratagemsSinceReset = 0
+
+    local ShowingRoundStats = false
+    local ShowingGameOver = false
+    local ShowingLeaderboard = false
+    local RoundStatsStartTime = 0
+    local RoundStatsRevealStage = 0
+    local RoundBaseScore = 0
+    local RoundSpeedBonus = 0
+    local RoundStreakBonus = 0
+    local RoundPerfectBonus = 0
+    local RoundTimeBonus = 0
+    local RoundTotalScore = 0
+
+    local LeaderboardData = {}
+    local LeaderboardRevealStage = 0
+    local LeaderboardStartTime = 0
+
+    local finalBaseScore = 0
+    local finalSpeedBonus = 0
+    local finalStreakBonus = 0
+    local finalPerfectBonus = 0
+    local finalTimeBonus = 0
+
+    local LeaderboardTransitionScheduled = false
+
+    local gameStats = {}
+
+    timer.simple(0.1, function()
+        render.setScreenDimensions(screen, 0, 0, 25 * Stretch_Ratio.x, 25 * Stretch_Ratio.y)
+    end)
+
+    local function SendGameStatsToServer()
+        local steamID = player():getSteamID()
+        local numericID = steamID:match(":(%d+)$")
+
+        if numericID then
+            local statsToSend = {
+                steamID = numericID,
+                name = player():getName(),
+                baseScore = finalBaseScore,
+                speedBonus = finalSpeedBonus,
+                streakBonus = finalStreakBonus,
+                perfectBonus = finalPerfectBonus,
+                timeBonus = finalTimeBonus,
+                totalScore = Score,
+                maxStreak = MaxStreak,
+                perfectStratagems = PerfectStratagems,
+                totalStratagems = TotalStratagems,
+                errors = Errors,
+                timestamp = os.time()
+            }
+
+            net.start("SendPlayerStats")
+                net.writeTable(statsToSend)
+            net.send()
+        end
+    end
+
+    local function CreateNewStatsFileFromData(statsData)
+        local gameStats = {
+            baseScore = statsData.baseScore,
+            speedBonus = statsData.speedBonus,
+            streakBonus = statsData.streakBonus,
+            perfectBonus = statsData.perfectBonus,
+            timeBonus = statsData.timeBonus,
+            totalScore = statsData.totalScore,
+            maxStreak = statsData.maxStreak,
+            perfectStratagems = statsData.perfectStratagems,
+            totalStratagems = statsData.totalStratagems,
+            errors = statsData.errors,
+            timestamp = statsData.timestamp,
+            playername = statsData.name
+        }
+
+        local statsJSON = json.encode(gameStats)
+        file.write(statsData.steamID .. ".txt", statsJSON)
+    end
+
+    if player() == owner() then
+        net.receive("ReadLeaderboardFiles", function()
+            local players = net.readTable()
+            local leaderboardData = {}
+
+            for i, playerInfo in ipairs(players) do
+                local filename = playerInfo.steamID .. ".txt"
+
+                if file.exists(filename) then
+                    local contents = file.read(filename)
+                    if contents and contents ~= "Data" then
+                        local success, data = pcall(json.decode, contents)
+                        if success then
+
+                            leaderboardData[playerInfo.steamID] = {
+                                name = data.playername or playerInfo.name,  
+                                score = data.totalScore or 0,
+                                perfectStratagems = data.perfectStratagems or 0,
+                                maxStreak = data.maxStreak or 0,
+                                totalStratagems = data.totalStratagems or 0,
+                                timestamp = data.timestamp or 0
+                            }
+                        else
+                            leaderboardData[playerInfo.steamID] = {
+                                name = playerInfo.name,
+                                score = 0,
+                                perfectStratagems = 0,
+                                maxStreak = 0,
+                                totalStratagems = 0,
+                                error = "Invalid data"
+                            }
+                        end
+                    else
+                        leaderboardData[playerInfo.steamID] = {
+                            name = playerInfo.name,
+                            score = 0,
+                            perfectStratagems = 0,
+                            maxStreak = 0,
+                            totalStratagems = 0,
+                            newPlayer = true
+                        }
+                    end
+                else
+                    leaderboardData[playerInfo.steamID] = {
+                        name = playerInfo.name,
+                        score = 0,
+                        perfectStratagems = 0,
+                        maxStreak = 0,
+                        totalStratagems = 0,
+                        newPlayer = true
+                    }
+                end
+            end
+
+            local sortedLeaderboard = {}
+            for steamID, data in pairs(leaderboardData) do
+                table.insert(sortedLeaderboard, {
+                    name = data.name,
+                    score = data.score,
+                    perfectStratagems = data.perfectStratagems,
+                    maxStreak = data.maxStreak,
+                    totalStratagems = data.totalStratagems,
+                    timestamp = data.timestamp
+                })
+            end
+
+            table.sort(sortedLeaderboard, function(a, b)
+                return a.score > b.score
+            end)
+
+            net.start("BroadcastLeaderboardData")
+                net.writeTable(sortedLeaderboard)
+            net.send()
+
+        end)
+    end
+
+    net.receive("ReceiveLeaderboardData", function()
+        LeaderboardData = net.readTable()
+
+        for i = 1, math.min(3, #LeaderboardData) do
+            local entry = LeaderboardData[i]
+        end
+
+        if ShowingLeaderboard then
+            LeaderboardStartTime = timer.realtime()
+            LeaderboardRevealStage = 0
+
+            for i = 1, math.min(10, #LeaderboardData) do
+                timer.simple(1 + (i * 0.5), function()
+                    if ShowingLeaderboard then
+                        LeaderboardRevealStage = i
+                        Bonus_Sound:stop() Bonus_Sound:play() Bonus_Sound:setVolume(0.3)
+                    end
+                end)
+            end
+        end
+    end)
+
+    net.receive("SavePlayerStats", function()
+        local statsData = net.readTable()
+        local filename = statsData.steamID .. ".txt"
+
+        if file.exists(filename) then
+            local content = file.read(filename)
+            if content and content ~= "Data" then
+                local success, existingStats = pcall(json.decode, content)
+                if success and existingStats then
+                    local existingScore = existingStats.totalScore or 0
+
+                    if statsData.totalScore > existingScore then
+                        local gameStats = {
+                            baseScore = statsData.baseScore,
+                            speedBonus = statsData.speedBonus,
+                            streakBonus = statsData.streakBonus,
+                            perfectBonus = statsData.perfectBonus,
+                            timeBonus = statsData.timeBonus,
+                            totalScore = statsData.totalScore,
+                            maxStreak = statsData.maxStreak,
+                            perfectStratagems = statsData.perfectStratagems,
+                            totalStratagems = statsData.totalStratagems,
+                            errors = statsData.errors,
+                            timestamp = statsData.timestamp,
+                            playername = statsData.name
+                        }
+
+                        local statsJSON = json.encode(gameStats)
+                        file.write(filename, statsJSON)
+                    else
+                    end
+                else
+
+                    CreateNewStatsFileFromData(statsData)
+                end
+            else
+
+                CreateNewStatsFileFromData(statsData)
+            end
+        else
+
+            CreateNewStatsFileFromData(statsData)
+        end
+    end)
+
+    local function GetRandomCombination()
+        local randomIndex = math.random(1, #Combinations)
+        return Combinations[randomIndex]
+    end
+
+    local function CalculateBaseScore(pattern)
+        local baseScore = #pattern * 100
+        if #pattern >= 6 then
+            baseScore = baseScore + 200
+        elseif #pattern >= 4 then
+            baseScore = baseScore + 100
+        end
+        return baseScore
+    end
+
+    local function CalculateSpeedBonus(inputTime, pattern)
+        local maxTime = #pattern * 1.5
+        local timeBonus = math.max(0, (maxTime - inputTime) / maxTime) * 500
+        return math.floor(timeBonus)
+    end
+
+    local function CalculateStreakBonus()
+        if CurrentStreak >= 3 then
+            return CurrentStreak * 50
+        end
+        return 0
+    end
+
+    local function AddScore(points, reason)
+        Score = Score + points
+    end
+
+    local function AddTime(seconds)
+        TimeRemaining = math.min(MaxGameTime, TimeRemaining + seconds)
+    end
+
+    local function LoadLeaderboardData()
+        LeaderboardData = {}
+
+        local files = file.find("*")
+        for _, filename in pairs(files) do
+            if filename:match("%d+%.txt") then 
+                local content = file.read(filename)
+                if content and content ~= "0" then
+                    local success, stats = pcall(json.decode, content)
+                    if success and stats then
+                        local playerID = filename:gsub(".txt", "")
+                        table.insert(LeaderboardData, {
+                            id = playerID,
+                            score = stats.totalScore or 0,
+                            totalStratagems = stats.totalStratagems or 0,
+                            perfectStratagems = stats.perfectStratagems or 0,
+                            maxStreak = stats.maxStreak or 0,
+                            timestamp = stats.timestamp or 0
+                        })
+                    end
+                end
+            end
+        end
+
+        table.sort(LeaderboardData, function(a, b)
+            return a.score > b.score
+        end)
+    end
+
+    local function ShowLeaderboard()
+
+        net.start("RequestLeaderboard")
+        net.send()
+
+        ShowingLeaderboard = true
+        ShowingRoundStats = false
+        ShowingGameOver = true
+        LeaderboardData = {} 
+
+        LeaderboardStartTime = timer.realtime()
+        LeaderboardRevealStage = 0
+
+        timer.simple(0.5, function()
+            if ShowingLeaderboard and #LeaderboardData > 0 then
+
+                for i = 1, math.min(10, #LeaderboardData) do
+                    timer.simple(1 + (i * 0.5), function()
+                        if ShowingLeaderboard then
+                            LeaderboardRevealStage = i
+                            Bonus_Sound:stop() Bonus_Sound:play() Bonus_Sound:setVolume(0.3)
+                        end
+                    end)
+                end
+            else
+
+                for i = 1, math.min(10, #LeaderboardData) do
+                    timer.simple(1 + (i * 0.5), function()
+                        if ShowingLeaderboard then
+                            LeaderboardRevealStage = i
+                            Bonus_Sound:stop() Bonus_Sound:play() Bonus_Sound:setVolume(0.3)
+                        end
+                    end)
+                end
+            end
+        end)
+    end
+
+    local function StartNewGame()
+        CurrentCombination = GetRandomCombination()
+        CurrentInput = {}
+        GameActive = true
+        Message = "Enter the sequence!"
+        MessageColor = Color(255, 255, 255, 255)
+        RoundStartTime = timer.realtime()
+    end
+
+    local function ShowRoundStats(baseScore, speedBonus, streakBonus, perfectBonus, timeBonus, totalScore, isGameOver)
+        ShowingRoundStats = true
+        ShowingGameOver = isGameOver or false
+        RoundStatsStartTime = timer.realtime()
+        RoundStatsRevealStage = 0
+        RoundBaseScore = baseScore
+        RoundSpeedBonus = speedBonus
+        RoundStreakBonus = streakBonus
+        RoundPerfectBonus = perfectBonus
+        RoundTimeBonus = timeBonus
+        RoundTotalScore = totalScore
+
+        timer.simple(1, function() 
+            if ShowingRoundStats then 
+                RoundStatsRevealStage = 1 
+                Bonus_Sound:stop() Bonus_Sound:play() Bonus_Sound:setVolume(0.5)
+            end 
+        end)
+        timer.simple(2, function() 
+            if ShowingRoundStats then 
+                RoundStatsRevealStage = 2 
+                Bonus_Sound:stop() Bonus_Sound:play() Bonus_Sound:setVolume(0.5)
+            end 
+        end)
+        timer.simple(3, function() 
+            if ShowingRoundStats then 
+                RoundStatsRevealStage = 3 
+                Bonus_Sound:stop() Bonus_Sound:play() Bonus_Sound:setVolume(0.5)
+            end 
+        end)
+        timer.simple(4, function() 
+            if ShowingRoundStats then 
+                RoundStatsRevealStage = 4 
+                Bonus_Sound:stop() Bonus_Sound:play() Bonus_Sound:setVolume(0.5)
+            end 
+        end)
+        timer.simple(5, function() 
+            if ShowingRoundStats then 
+                RoundStatsRevealStage = 5 
+                Bonus_Sound:stop() Bonus_Sound:play() Bonus_Sound:setVolume(0.5)
+            end 
+        end)
+
+        if not isGameOver then
+            timer.simple(8, function()
+                if ShowingRoundStats and not ShowingGameOver then
+                    ShowingRoundStats = false
+                    StartNewGame()
+                end
+            end)
+        end
+    end
+
+    local function StartGameSession()
+        if ShowingRoundStats or ShowingLeaderboard or ShowingGameOver then
+            return
+        end
+
+        if ThemeSong then
+            ThemeSong:setVolume(0.25)
+        end
+        GameRunning = true
+        TimeRemaining = GameTime
+        StratagemsSinceReset = 0
+        Score = 0
+        TotalStratagems = 0
+        PerfectStratagems = 0
+        Errors = 0
+        CurrentStreak = 0
+        MaxStreak = 0
+        LastFrameTime = timer.realtime()
+        StartNewGame()
+    end
+
+    local function CreateNewStatsFile(numericID, score)
+            gameStats = {
+            baseScore = finalBaseScore,
+            speedBonus = finalSpeedBonus,
+            streakBonus = finalStreakBonus,
+            perfectBonus = finalPerfectBonus,
+            timeBonus = finalTimeBonus,
+            totalScore = score,
+            maxStreak = MaxStreak,
+            perfectStratagems = PerfectStratagems,
+            totalStratagems = TotalStratagems,
+            errors = Errors,
+            timestamp = os.time(),
+            playername = player():getName()
+        }
+
+        local statsJSON = json.encode(gameStats)
+        file.write(numericID .. ".txt", statsJSON)
+    end
+
+    local function WriteGameStats()
+        if player() == owner() then
+            local steamID = player():getSteamID()
+            local numericID = steamID:match(":(%d+)$")
+
+            if numericID then
+                local currentScore = Score  
+
+                if file.exists(numericID .. ".txt") then
+                    local content = file.read(numericID .. ".txt")
+                    if content and content ~= "0" then
+                        local success, existingStats = pcall(json.decode, content)
+                        if success and existingStats then
+                            local existingScore = existingStats.totalScore or 0
+
+                            if currentScore > existingScore then
+
+                                    gameStats = {
+                                    baseScore = finalBaseScore,
+                                    speedBonus = finalSpeedBonus,
+                                    streakBonus = finalStreakBonus,
+                                    perfectBonus = finalPerfectBonus,
+                                    timeBonus = finalTimeBonus,
+                                    totalScore = currentScore,
+                                    maxStreak = MaxStreak,
+                                    perfectStratagems = PerfectStratagems,
+                                    totalStratagems = TotalStratagems,
+                                    errors = Errors,
+                                    timestamp = os.time(),
+                                    playername = player():getName()
+                                }
+
+                                local statsJSON = json.encode(gameStats)
+                                file.write(numericID .. ".txt", statsJSON)
+                            end
+
+                        else
+
+                            CreateNewStatsFile(numericID, currentScore)
+                        end
+                    else
+
+                        CreateNewStatsFile(numericID, currentScore)
+                    end
+                else
+
+                    CreateNewStatsFile(numericID, currentScore)
+                end
+            end
+        end
+    end
+
+    local function EndGameSession()
+        GameRunning = false
+        GameActive = false
+
+        local finalBaseScore = Score
+        local finalSpeedBonus = 0  
+        local finalStreakBonus = MaxStreak * 50
+        local finalPerfectBonus = PerfectStratagems * 200
+        local finalTimeBonus = 0   
+        local finalTotalScore = Score
+
+        finalBaseScore = finalBaseScore
+        finalSpeedBonus = finalSpeedBonus
+        finalStreakBonus = finalStreakBonus
+        finalPerfectBonus = finalPerfectBonus
+        finalTimeBonus = finalTimeBonus
+
+        SendGameStatsToServer()
+
+        ShowingRoundStats = true
+        ShowingGameOver = true
+        ShowingLeaderboard = false
+
+        ShowRoundStats(finalBaseScore, finalSpeedBonus, finalStreakBonus, finalPerfectBonus, finalTimeBonus, finalTotalScore, true)
+    end
+
+    local function ResetCurrentStratagem()
+        CurrentInput = {}
+        Errors = Errors + 1
+        CurrentStreak = 0
+        Message = " INCORRECT! Keep going!"
+        MessageColor = Color(255, 50, 50, 255)
+        GameActive = false
+
+        local penalty = 50
+        Score = math.max(0, Score - penalty)
+        AddTime(-2.0)
+
+        timer.simple(1, function()
+            if GameRunning then
+                StartNewGame()
+            end
+        end)
+    end
+
+    local function CompleteStratagem()
+        local currentTime = timer.realtime()
+        local inputTime = currentTime - RoundStartTime
+        local baseScore = CalculateBaseScore(CurrentCombination.Pattern)
+        local speedBonus = CalculateSpeedBonus(inputTime, CurrentCombination.Pattern)
+        local streakBonus = CalculateStreakBonus()
+        local perfectBonus = 0
+        local timeBonus = 200 
+
+        if true then 
+            perfectBonus = 200
+            PerfectStratagems = PerfectStratagems + 1
+            CurrentStreak = CurrentStreak + 1
+            MaxStreak = math.max(MaxStreak, CurrentStreak)
+        end
+
+        local totalScore = baseScore + speedBonus + streakBonus + perfectBonus + timeBonus
+
+        AddScore(baseScore)
+        if speedBonus > 0 then AddScore(speedBonus) end
+        if streakBonus > 0 then AddScore(streakBonus) end
+        if perfectBonus > 0 then AddScore(perfectBonus) end
+        AddScore(timeBonus)
+
+        TotalStratagems = TotalStratagems + 1
+        StratagemsSinceReset = StratagemsSinceReset + 1
+
+        AddTime(2.0)
+
+        if StratagemsSinceReset >= 5 then
+            Round_Clear:stop() 
+            Round_Clear:play()
+            TimeRemaining = MaxGameTime
+            StratagemsSinceReset = 0
+            Message = " ROUND COMPLETE!"
+
+            GameActive = false
+            ShowRoundStats(baseScore, speedBonus, streakBonus, perfectBonus, timeBonus, totalScore, false)
+        else
+            Message = " " .. CurrentCombination.Name .. " DEPLOYED! +" .. totalScore .. "pts +2s"
+            MessageColor = Color(50, 255, 50, 255)
+            GameActive = false
+
+            timer.simple(0.5, function()
+                if GameRunning and not ShowingRoundStats then
+                    StartNewGame()
+                end
+            end)
+        end
+    end
+
+    local function CheckInput(key)
+        if not GameActive or not CurrentCombination or not GameRunning or ShowingRoundStats then return end
+
+        local direction = 0
+        if key == KEY.S then direction = 1 Buttons:stop() Buttons:play() Buttons:setPitch(70 + Button_Pitch)
+        elseif key == KEY.A then direction = 2 Buttons:stop() Buttons:play() Buttons:setPitch(80 + Button_Pitch)
+        elseif key == KEY.W then direction = 3 Buttons:stop() Buttons:play() Buttons:setPitch(90 + Button_Pitch)
+        elseif key == KEY.D then direction = 4 Buttons:stop() Buttons:play() Buttons:setPitch(100 + Button_Pitch)
+        end
+
+        if direction > 0 then
+            table.insert(CurrentInput, direction)
+
+            local correctSoFar = true
+            for i = 1, #CurrentInput do
+                if CurrentInput[i] ~= CurrentCombination.Pattern[i] then
+                    correctSoFar = false
+                    break
+                end
+            end
+
+            if not correctSoFar then
+                ResetCurrentStratagem()
+                Loose:play()
+                Button_Pitch = 1
+                return
+            end
+
+            if #CurrentInput == #CurrentCombination.Pattern then
+                Button_Pitch = Button_Pitch + 5.0
+                CompleteStratagem()
+            end
+        end
+    end
+
+    local function UpdateTimer()
+        if not GameRunning then return end
+
+        local currentTime = timer.realtime()
+        local deltaTime = currentTime - LastFrameTime
+        LastFrameTime = currentTime
+
+        if not ShowingRoundStats then
+            TimeRemaining = TimeRemaining - deltaTime
+        end
+
+        if TimeRemaining <= 0 then
+            TimeRemaining = 0
+            EndGameSession()
+        end
+    end
+
+    hook.add("think", "GameTimer", function()
+        UpdateTimer()
+    end)
+
+    hook.add("render", "Screen_Render", function()
+        if not screen then return end
+
+        render.setColor(Color(20, 20, 40, 255))
+        render.drawRect(0, 0, screenWidth, screenHeight)
+
+            if ShowingLeaderboard then
+                local titleFont = render.createFont("Arial", 32, 700, true, false, false, false, 0, false, 0)
+                local entryFont = render.createFont("Arial", 24, 700, true, false, false, false, 0, false, 0)
+                local detailFont = render.createFont("Arial", 18, 700, true, false, false, false, 0, false, 0)
+
+                render.setFont(titleFont)
+                render.setColor(Color(255, 255, 0, 255))
+                render.drawText(screenWidth/2, 40, "=== LEADERBOARD ===", TEXT_ALIGN.CENTER)
+
+                if #LeaderboardData == 0 then
+                    render.setFont(entryFont)
+                    render.setColor(Color(255, 255, 255, 255))
+                    render.drawText(screenWidth/2, screenHeight/2, "Loading leaderboard data...", TEXT_ALIGN.CENTER)
+                    return
+                end
+
+                local startY = 100
+                local entryHeight = 50
+                local maxEntries = math.min(10, #LeaderboardData)
+
+                for i = 1, maxEntries do
+                    if i <= LeaderboardRevealStage then
+                        local entry = LeaderboardData[i]
+                        local yPos = startY + ((i-1) * entryHeight)
+
+                        local isCurrentPlayer = (entry.name == player():getName())
+
+                        render.setFont(entryFont)
+                        if i == 1 then
+                            render.setColor(Color(255, 215, 0, 255)) 
+                        elseif i == 2 then
+                            render.setColor(Color(192, 192, 192, 255)) 
+                        elseif i == 3 then
+                            render.setColor(Color(205, 127, 50, 255)) 
+                        else
+                            render.setColor(isCurrentPlayer and Color(100, 255, 100, 255) or Color(200, 200, 255, 255))
+                        end
+
+                        render.drawText(60, yPos, "#" .. i, TEXT_ALIGN.LEFT)
+                        render.drawText(120, yPos, entry.name or "Unknown Player", TEXT_ALIGN.LEFT)
+                        render.drawText(screenWidth - 60, yPos, (entry.score or 0) .. " pts", TEXT_ALIGN.RIGHT)
+
+                        if timer.realtime() - LeaderboardStartTime > 3 + (i * 0.5) then
+                            render.setFont(detailFont)
+                            render.setColor(Color(150, 200, 255, 255))
+                            render.drawText(screenWidth/2, yPos + 25, 
+                                "Perfect: " .. (entry.perfectStratagems or 0) .. 
+                                " | Streak: " .. (entry.maxStreak or 0) .. 
+                                " | Total: " .. (entry.totalStratagems or 0), 
+                                TEXT_ALIGN.CENTER)
+                        end
+                    end
+                end
+
+                if LeaderboardRevealStage >= maxEntries then
+                    render.setFont(detailFont)
+                    render.setColor(Color(200, 100, 100, 255))
+                    render.drawText(screenWidth/2, screenHeight - 60, "Press SPACE to play again", TEXT_ALIGN.CENTER)
+                end
+
+                return
+            end
+
+        if ShowingRoundStats then
+            local statsFont = render.createFont("Arial", 28, 700, true, false, false, false, 0, false, 0)
+            local detailFont = render.createFont("Arial", 20, 700, true, false, false, false, 0, false, 0)
+            local totalFont = render.createFont("Arial", 32, 700, true, false, false, false, 0, false, 0)
+
+            render.setFont(statsFont)
+            if ShowingGameOver then
+                render.setColor(Color(255, 50, 50, 255))
+                render.drawText(screenWidth/2, 60, "=== GAME OVER ===", TEXT_ALIGN.CENTER)
+            else
+                render.setColor(Color(255, 255, 0, 255))
+                render.drawText(screenWidth/2, 60, "=== ROUND COMPLETE ===", TEXT_ALIGN.CENTER)
+            end
+
+            local yPos = 120
+            local lineHeight = 35
+
+            if RoundStatsRevealStage >= 1 then
+                render.setColor(Color(100, 255, 100, 255))
+                if ShowingGameOver then
+                    render.drawText(screenWidth/2, yPos, "TOTAL STRATAGEMS: " .. TotalStratagems, TEXT_ALIGN.CENTER)
+                else
+                    render.drawText(screenWidth/2, yPos, "BASE SCORE: +" .. RoundBaseScore, TEXT_ALIGN.CENTER)
+                end
+            end
+
+            if RoundStatsRevealStage >= 2 then
+                render.setColor(Color(100, 200, 255, 255))
+                if ShowingGameOver then
+                    render.drawText(screenWidth/2, yPos + lineHeight, "PERFECT STRATAGEMS: " .. PerfectStratagems, TEXT_ALIGN.CENTER)
+                else
+                    render.drawText(screenWidth/2, yPos + lineHeight, "SPEED BONUS: +" .. RoundSpeedBonus, TEXT_ALIGN.CENTER)
+                end
+            end
+
+            if RoundStatsRevealStage >= 3 then
+                render.setColor(Color(255, 200, 100, 255))
+                if ShowingGameOver then
+                    render.drawText(screenWidth/2, yPos + lineHeight * 2, "MAX STREAK: " .. MaxStreak, TEXT_ALIGN.CENTER)
+                else
+                    render.drawText(screenWidth/2, yPos + lineHeight * 2, "STREAK BONUS: +" .. RoundStreakBonus, TEXT_ALIGN.CENTER)
+                end
+            end
+
+            if RoundStatsRevealStage >= 4 then
+                render.setColor(Color(255, 100, 255, 255))
+                if ShowingGameOver then
+                    render.drawText(screenWidth/2, yPos + lineHeight * 3, "ERRORS: " .. Errors, TEXT_ALIGN.CENTER)
+                else
+                    render.drawText(screenWidth/2, yPos + lineHeight * 3, "PERFECT BONUS: +" .. RoundPerfectBonus, TEXT_ALIGN.CENTER)
+                end
+                render.setColor(Color(100, 255, 255, 255))
+                if ShowingGameOver then
+                    render.drawText(screenWidth/2, yPos + lineHeight * 4, "TIME BONUS: +" .. RoundTimeBonus, TEXT_ALIGN.CENTER)
+                else
+                    render.drawText(screenWidth/2, yPos + lineHeight * 4, "TIME BONUS: +" .. RoundTimeBonus, TEXT_ALIGN.CENTER)
+                end
+            end
+
+            if RoundStatsRevealStage >= 5 then
+                render.setFont(totalFont)
+                render.setColor(Color(255, 255, 0, 255))
+                render.drawText(screenWidth/2, yPos + lineHeight * 6, "FINAL SCORE: " .. Score, TEXT_ALIGN.CENTER)
+
+                render.setFont(detailFont)
+                if ShowingGameOver then
+                    render.setColor(Color(200, 100, 100, 255))
+                    render.drawText(screenWidth/2, yPos + lineHeight * 8, "Press SPACE to continue to leaderboard", TEXT_ALIGN.CENTER)
+                else
+                    local timeSinceReveal = timer.realtime() - RoundStatsStartTime
+                    local countdown = math.max(0, 4.0 - timeSinceReveal)
+                end
+            end
+
+            return 
+        end
+
+        local verticalOffset = 120
+        local statsFont = render.createFont("Arial", 18, 700, true, false, false, false, 0, false, 0)
+        render.setFont(statsFont)
+
+        render.setColor(Color(255, 255, 0, 255))
+        render.drawText(20, 20, "SCORE: " .. Score, TEXT_ALIGN.LEFT)
+
+        render.setColor(Color(200, 200, 255, 255))
+        render.drawText(20, 45, "Stratagems: " .. TotalStratagems, TEXT_ALIGN.LEFT)
+        render.drawText(20, 70, "Perfect: " .. PerfectStratagems, TEXT_ALIGN.LEFT)
+        render.drawText(screenWidth - 20, 20, "Streak: " .. CurrentStreak, TEXT_ALIGN.RIGHT)
+        render.drawText(screenWidth - 20, 45, "Max Streak: " .. MaxStreak, TEXT_ALIGN.RIGHT)
+        render.drawText(screenWidth - 20, 70, "Errors: " .. Errors, TEXT_ALIGN.RIGHT)
+
+        local timeColor = TimeRemaining > 10 and Color(50, 255, 50, 255) or 
+                         TimeRemaining > 5 and Color(255, 255, 50, 255) or 
+                         Color(255, 50, 50, 255)
+        render.setColor(timeColor)
+        render.drawText(screenWidth/2, 20, "TIME: " .. math.floor(TimeRemaining) .. "s", TEXT_ALIGN.CENTER)
+
+        render.setColor(Color(150, 200, 255, 255))
+        render.drawText(screenWidth/2, 45, "Next Full Reset: " .. (5 - StratagemsSinceReset) .. " stratagems", TEXT_ALIGN.CENTER)
+
+        local titleFont = render.createFont("Arial", 24, 700, true, false, false, false, 0, false, 0)
+        render.setFont(titleFont)
+
+        if CurrentCombination then
+            render.setColor(Color(255, 255, 255, 255))
+            render.drawText(screenWidth/2, 100 + verticalOffset, CurrentCombination.Name, TEXT_ALIGN.CENTER)
+        end
+
+        if CurrentCombination then
+            render.setColor(Color(255, 255, 255, 255))
+            render.drawText(screenWidth/2, 130 + verticalOffset, "ENTER THIS SEQUENCE:", TEXT_ALIGN.CENTER)
+
+            local iconSize = 60
+            local spacing = 15
+            local totalWidth = (#CurrentCombination.Pattern * iconSize) + ((#CurrentCombination.Pattern - 1) * spacing)
+            local startX = (screenWidth - totalWidth) / 2
+
+            for i, direction in ipairs(CurrentCombination.Pattern) do
+                local x = startX + ((i - 1) * (iconSize + spacing))
+                local y = 160 + verticalOffset
+
+                local isCurrent = i == #CurrentInput + 1 and GameActive
+                render.setColor(isCurrent and Color(255, 255, 100, 255) or Color(255, 255, 255, 255))
+
+                if direction == 1 then 
+                    render.setMaterial(Down_Image)
+                elseif direction == 2 then 
+                    render.setMaterial(Left_Image)
+                elseif direction == 3 then 
+                    render.setMaterial(Up_Image)
+                elseif direction == 4 then 
+                    render.setMaterial(Right_Image)
+                end
+
+                render.drawTexturedRect(x, y, iconSize, iconSize)
+            end
+        end
+
+        local barWidth = screenWidth - 40
+        local barHeight = 20
+        local barX = 20
+        local barY = screenHeight - 40
+
+        render.setColor(Color(50, 50, 50, 255))
+        render.drawRect(barX, barY, barWidth, barHeight)
+
+        local timeRatio = TimeRemaining / MaxGameTime
+        local remainingWidth = barWidth * timeRatio
+
+        local barColor = timeRatio > 0.66 and Color(50, 255, 50, 255) or 
+                        timeRatio > 0.33 and Color(255, 255, 50, 255) or 
+                        Color(255, 50, 50, 255)
+
+        render.setColor(barColor)
+        render.drawRect(barX, barY, remainingWidth, barHeight)
+
+        render.setColor(Color(255, 255, 255, 255))
+        render.drawRectOutline(barX, barY, barWidth, barHeight)
+
+        local messageFont = render.createFont("Arial", 20, 700, true, false, false, false, 0, false, 0)
+        render.setFont(messageFont)
+        render.setColor(MessageColor)
+        render.drawText(screenWidth/2, barY - 30, Message, TEXT_ALIGN.CENTER)
+
+        local helpFont = render.createFont("Arial", 16, 400, false, false, false, false, 0, false, 0)
+        render.setFont(helpFont)
+        render.setColor(Color(200, 200, 200, 255))
+        render.drawText(screenWidth/2, barY - 60, "S=Down  A=Left  W=Up  D=Right  SPACE=Restart", TEXT_ALIGN.CENTER)
+
+        if #CurrentInput > 0 and GameActive then
+            render.setColor(Color(150, 150, 150, 255))
+            render.drawText(screenWidth/2, barY - 90, "Progress: " .. #CurrentInput .. "/" .. #CurrentCombination.Pattern, TEXT_ALIGN.CENTER)
+        end
+    end)
+
+    hook.add("InputPressed", "Game_Input", function(key)
+        if key == KEY.S or key == KEY.A or key == KEY.W or key == KEY.D then
+            CheckInput(key)
+        end
+
+        if key == KEY.SPACE and player():inVehicle() then
+
+            if ShowingLeaderboard then
+
+                ShowingLeaderboard = false
+                ShowingGameOver = false
+                StartGameSession()
+            elseif ShowingRoundStats and ShowingGameOver then
+
+                ShowingRoundStats = false
+                ShowLeaderboard()
+            elseif not GameRunning and not ShowingRoundStats and not ShowingGameOver and not ShowingLeaderboard then
+
+                StartGameSession()
+            elseif GameRunning and not GameActive and ShowingRoundStats then
+
+                ShowingRoundStats = false
+                StartNewGame()
+            end
+
+        end
+    end)
+
+        hook.add("InputPressed", "ResetStats", function(key)
+            if key == KEY.R then
+                Score = 0
+                TotalStratagems = 0
+                PerfectStratagems = 0
+                Errors = 0
+                CurrentStreak = 0
+                MaxStreak = 0
+            end
+        end)
+
+    end
